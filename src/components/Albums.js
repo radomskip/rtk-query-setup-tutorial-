@@ -14,12 +14,20 @@ export default function Albums(props) {
     isFetching,
     isError,
     error,
-  } = useGetAlbumsQuery(page);
+    refetch,
+  } = useGetAlbumsQuery(page, {
+    refetchOnFocus: false,
+    refetchOnReconnect: false,
+  });
 
   const [deleteAlbum] = useDeleteAlbumMutation();
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <div>loading...</div>;
+  }
+
+  if (isFetching) {
+    return <div>fetching...</div>;
   }
 
   if (isError) {
@@ -32,8 +40,8 @@ export default function Albums(props) {
       <ul>
         {albums.map((album) => (
           <li key={album.id}>
-            {album.id} - {album.title}{' '}
-            <button onClick={() => setSelectedAlbum(album)}>edit</button>{' '}
+            {album.id} - {album.title}{" "}
+            <button onClick={() => setSelectedAlbum(album)}>edit</button>{" "}
             <button onClick={() => deleteAlbum(album.id)}>delete</button>
           </li>
         ))}
@@ -47,6 +55,7 @@ export default function Albums(props) {
       >
         Next
       </button>
+      <button onClick={() => refetch()}>Refetch</button>
     </div>
   );
 }

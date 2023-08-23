@@ -2,12 +2,16 @@ import React from 'react';
 import { useUpdateAlbumMutation } from '../app/services/jsonServerApi';
 
 export default function UpdateAlbumForm(props) {
-  const { selectedAlbum = null } = props;
+  const { selectedAlbum = null, onUpdate } = props;
   const [updateAlbum, { isLoading }] = useUpdateAlbumMutation();
 
-  function submitAlbum(event) {
+  async function submitAlbum(event) {
     event.preventDefault();
-    updateAlbum({ id: selectedAlbum.id, title: event.target['title'].value });
+    await updateAlbum({
+      id: selectedAlbum.id,
+      title: event.target["title"].value,
+    });
+    onUpdate();
     event.target.reset();
   }
 

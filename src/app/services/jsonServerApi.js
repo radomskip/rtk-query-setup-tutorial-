@@ -1,39 +1,40 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const jsonServerApi = createApi({
-  reducerPath: 'jsonServerApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/' }),
-  tagTypes: ['Albums'],
+  reducerPath: "jsonServerApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/" }),
+  tagTypes: ["Albums"],
   endpoints: (builder) => ({
     getAlbums: builder.query({
       query: (page = 1) => `albums?_page=${page}&_limit=10`,
-      providesTags: ['Albums'],
+      providesTags: ["Albums"],
+      keepUnusedDataFor: 5,
     }),
 
     createAlbum: builder.mutation({
       query: (title) => ({
-        url: 'albums',
-        method: 'POST',
+        url: "albums",
+        method: "POST",
         body: { title },
       }),
-      invalidatesTags: ['Albums'],
+      invalidatesTags: ["Albums"],
     }),
 
     updateAlbum: builder.mutation({
       query: ({ id, title }) => ({
         url: `albums/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: { title },
       }),
-      invalidatesTags: ['Albums'],
+      invalidatesTags: ["Albums"],
     }),
 
     deleteAlbum: builder.mutation({
       query: (id) => ({
         url: `albums/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Albums'],
+      invalidatesTags: ["Albums"],
     }),
   }),
 });
